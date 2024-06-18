@@ -32,6 +32,11 @@ variable "s3_chat_transcripts_prefix" {
   default = "call-transcripts/"
 }
 
+variable "s3_scheduled_reports_prefix" {
+  description = "S3 chat transcripts prefix value"
+  default = "scheduled_reports/"
+}
+
 variable "firehose_prefix" {
   description = "Prefix for the Firehose delivery stream"
   default     = "ctr/year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/"
