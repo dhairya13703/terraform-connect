@@ -38,3 +38,4 @@ all.txt
 .terraform.lock.hcl
 code.sh
 
+terragrunt/cc1/.terragrunt-cache/*
