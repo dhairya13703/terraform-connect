@@ -10,11 +10,9 @@ check_exit_status() {
 read -p "Enter the client name for the new resources: " client_name
 read -p "Enter the AWS region for the resources: " aws_region
 
-# Create client directory
 mkdir -p "terragrunt/${client_name}"
 check_exit_status "Failed to create client directory for ${client_name}"
 
-# Create terragrunt.hcl file
 cat > "terragrunt/${client_name}/terragrunt.hcl" <<EOL
 terraform {
   source = "../../resources"
@@ -24,7 +22,7 @@ remote_state {
   backend = "s3"
   config = {
     bucket         = "poc-statefiles-137"
-    key            = terragrunt/"${client_name}/terraform.tfstate"
+    key            = "terragrunt/${client_name}/terraform.tfstate"
     region         = "us-west-2"
     encrypt        = true
   }
@@ -45,24 +43,14 @@ check_exit_status "Failed to create terragrunt.hcl file for ${client_name}"
 # EOL
 # check_exit_status "Failed to create tfvars file for ${client_name}"
 
-# Initialize Terragrunt
 cd "terragrunt/${client_name}"
 terragrunt init
 check_exit_status "Failed to initialize Terragrunt for ${client_name}"
 
-# Plan resources
 # terragrunt plan -var-file="../../vars/${client_name}.tfvars"
 terragrunt plan
 check_exit_status "Failed to plan resources for ${client_name}"
 
-# Prompt for confirmation before applying
-read -p "Do you want to apply the changes? (yes/no): " apply_confirmation
-if [ "${apply_confirmation}" != "yes" ]; then
-  echo "Changes not applied. Exiting."
-  exit 0
-fi
-
-# Apply resources
 # terragrunt apply -var-file="../../vars/${client_name}.tfvars"
 terragrunt apply
 check_exit_status "Failed to apply resources for ${client_name}"
