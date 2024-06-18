@@ -10,38 +10,38 @@ resource "aws_connect_instance" "POC" {
 
 }
 
-resource "aws_connect_instance_storage_config" "S3" {
+resource "aws_connect_instance_storage_config" "s3_call_recording" {
   instance_id   = aws_connect_instance.POC.id
   resource_type = "CALL_RECORDINGS"
   storage_config {
     storage_type = "S3"
     s3_config {
-      bucket_name   = aws_s3_bucket.connect_resources.id
+      bucket_name   = aws_s3_bucket.call_recordings.id
       bucket_prefix = var.s3_call_recording_prefix
     }
   }
 }
 
-resource "aws_connect_instance_storage_config" "S3_CHAT_TRANSCRIPTS" {
+resource "aws_connect_instance_storage_config" "s3_chat_transcripts" {
   instance_id   = aws_connect_instance.POC.id
   resource_type = "CHAT_TRANSCRIPTS"
 
   storage_config {
     s3_config {
-      bucket_name   = aws_s3_bucket.connect_resources.id
+      bucket_name   = aws_s3_bucket.chat_transcripts.id
       bucket_prefix = var.s3_chat_transcripts_prefix
     }
     storage_type = "S3"
   }
 }
 
-resource "aws_connect_instance_storage_config" "S3_SCHEDULED_REPORTS" {
+resource "aws_connect_instance_storage_config" "s3_scheduled_reports" {
   instance_id   = aws_connect_instance.POC.id
   resource_type = "SCHEDULED_REPORTS"
 
   storage_config {
     s3_config {
-      bucket_name   = aws_s3_bucket.connect_resources.id
+      bucket_name   = aws_s3_bucket.scheduled_reports.id
       bucket_prefix = var.s3_scheduled_reports_prefix
     }
     storage_type = "S3"
