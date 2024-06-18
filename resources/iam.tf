@@ -38,8 +38,8 @@ resource "aws_iam_role_policy" "firehose_policy" {
           "s3:PutObject"
         ],
         Resource = [
-          aws_s3_bucket.connect_resources.arn,
-          "${aws_s3_bucket.connect_resources.arn}/*"
+          aws_s3_bucket.firehose_stream_s3.arn,
+          "${aws_s3_bucket.firehose_stream_s3.arn}/*"
         ]
       },
       {
@@ -93,4 +93,88 @@ resource "aws_iam_role" "lambda_role" {
     Name      = local.lambda_role_name
     CreatedBy = "Terraform"
   }
+}
+
+resource "aws_s3_bucket_policy" "call_recordings_policy" {
+  bucket = aws_s3_bucket.call_recordings.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "AllowFirehoseAccess"
+        Effect    = "Allow"
+        Principal = {
+          AWS = aws_iam_role.firehose_role.arn
+        }
+        Action    = [
+          "s3:GetBucketLocation",
+          "s3:ListBucket",
+          "s3:ListBucketMultipartUploads",
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:AbortMultipartUpload"  
+        ]
+        Resource = [
+          "arn:aws:s3:::${aws_s3_bucket.call_recordings.id}",
+          "arn:aws:s3:::${aws_s3_bucket.call_recordings.id}/*"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_s3_bucket_policy" "chat_transcripts_policy" {
+  bucket = aws_s3_bucket.chat_transcripts.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "AllowFirehoseAccess"
+        Effect    = "Allow"
+        Principal = {
+          AWS = aws_iam_role.firehose_role.arn
+        }
+        Action    = [
+          "s3:GetBucketLocation",
+          "s3:ListBucket",
+          "s3:ListBucketMultipartUploads",
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:AbortMultipartUpload"  
+        ]
+        Resource = [
+          "arn:aws:s3:::${aws_s3_bucket.chat_transcripts.id}",
+          "arn:aws:s3:::${aws_s3_bucket.chat_transcripts.id}/*"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_s3_bucket_policy" "scheduled_reports_policy" {
+  bucket = aws_s3_bucket.scheduled_reports.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "AllowFirehoseAccess"
+        Effect    = "Allow"
+        Principal = {
+          AWS = aws_iam_role.firehose_role.arn
+        }
+        Action    = [
+          "s3:GetBucketLocation",
+          "s3:ListBucket",
+          "s3:ListBucketMultipartUploads",
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:AbortMultipartUpload"  
+        ]
+        Resource = [
+          "arn:aws:s3:::${aws_s3_bucket.scheduled_reports.id}",
+          "arn:aws:s3:::${aws_s3_bucket.scheduled_reports.id}/*"
+        ]
+      }
+    ]
+  })
 }

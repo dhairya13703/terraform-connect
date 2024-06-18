@@ -14,11 +14,15 @@ resource "aws_connect_instance_storage_config" "s3_call_recording" {
   instance_id   = aws_connect_instance.POC.id
   resource_type = "CALL_RECORDINGS"
   storage_config {
-    storage_type = "S3"
     s3_config {
       bucket_name   = aws_s3_bucket.call_recordings.id
-      bucket_prefix = var.s3_call_recording_prefix
+      bucket_prefix = "call-recordings/"
+      encryption_config {
+        encryption_type = "KMS"
+        key_id          = aws_kms_key.connect_key.arn
+      }
     }
+    storage_type = "S3"
   }
 }
 
@@ -30,6 +34,10 @@ resource "aws_connect_instance_storage_config" "s3_chat_transcripts" {
     s3_config {
       bucket_name   = aws_s3_bucket.chat_transcripts.id
       bucket_prefix = var.s3_chat_transcripts_prefix
+      encryption_config {
+        encryption_type = "KMS"
+        key_id          = aws_kms_key.connect_key.arn
+      }
     }
     storage_type = "S3"
   }
@@ -43,6 +51,10 @@ resource "aws_connect_instance_storage_config" "s3_scheduled_reports" {
     s3_config {
       bucket_name   = aws_s3_bucket.scheduled_reports.id
       bucket_prefix = var.s3_scheduled_reports_prefix
+      encryption_config {
+        encryption_type = "KMS"
+        key_id          = aws_kms_key.connect_key.arn
+      }
     }
     storage_type = "S3"
   }

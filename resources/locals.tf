@@ -8,5 +8,5 @@ locals {
   kms_key_description     = "KMS key for Amazon Connect"
   lambda_function_name    = "${var.base_name}-post-call-processing"
   media_stream_prefix     = "${var.base_name}-prefix"
-  firehouse_stream = "${var.base_name}-firehose-stream"
+  firehose_stream = "${var.base_name}-firehose-stream"
 }
