@@ -7,8 +7,9 @@ check_exit_status() {
   fi
 }
 
-read -p "Enter the client name for the new resources: " client_name
-read -p "Enter the AWS region for the resources: " aws_region
+read -p "Enter tenant name: " client_name
+# read -p "Enter the AWS region for the resources: " aws_region
+aws_region="eu-west-2"
 
 mkdir -p "terragrunt/${client_name}"
 check_exit_status "Failed to create client directory for ${client_name}"
