@@ -9,4 +9,5 @@ locals {
   lambda_function_name    = "${var.base_name}-post-call-processing"
   media_stream_prefix     = "${var.base_name}-prefix"
   firehose_stream = "${var.base_name}-firehose-stream"
-}
+  lex_bot_name = "${var.base_name}_lex_bot" #Use underscore only
+}  

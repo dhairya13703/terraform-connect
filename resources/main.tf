@@ -7,7 +7,6 @@ resource "aws_connect_instance" "POC" {
   contact_flow_logs_enabled = true
   contact_lens_enabled      = true
   early_media_enabled       = true
-
 }
 
 resource "aws_connect_instance_storage_config" "s3_call_recording" {
